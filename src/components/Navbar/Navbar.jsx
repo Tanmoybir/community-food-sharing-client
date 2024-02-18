@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { IoMenu, IoClose } from "react-icons/io5";
-import Container from "../Cotainer/Container";
+import Container from "../Container/Container";
 
 const Navbar = () => {
     const [openNav, setOpenNav] = useState(false);
