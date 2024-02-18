@@ -22,7 +22,7 @@ const Navbar = () => {
         { id: 5, name: 'My Food Request', link: '/myFoodRequest' },
     ]
     return (
-        <div className="-m-6 max-h-[768px] w-[calc(100%+48px)] overflow-scroll bg-white shadow-lg">
+        <div className="-m-6 max-h-[768px] w-[calc(100%+48px)] overflow-scroll sticky top-0 z-10 bg-white shadow-lg">
             <Container>
                 <nav className="sticky top-0 z-10 h-max max-w-full rounded-none">
                     <div className="flex items-center justify-between mx-4 my-4 lg:mx-8 lg:my-6">
