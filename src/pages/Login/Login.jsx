@@ -1,14 +1,22 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const {signInUser} = useAuth()
 
     console.log(email, password);
 
     const handleSignIn = (e) => {
         e.preventDefault()
+        try{
+            signInUser(email,password)
+        }
+        catch(error) {
+            console.log(error);
+        }
     }
     return (
         <div>

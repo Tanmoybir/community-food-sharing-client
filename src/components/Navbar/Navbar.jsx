@@ -3,9 +3,12 @@ import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { IoMenu, IoClose } from "react-icons/io5";
 import Container from "../Container/Container";
+import useAuth from "../../hooks/useAuth";
+
 
 const Navbar = () => {
     const [openNav, setOpenNav] = useState(false);
+    const {user,logOut} = useAuth()
 
     useEffect(() => {
         window.addEventListener(
@@ -54,7 +57,12 @@ const Navbar = () => {
                         </div>
                         {/* last */}
                         <div className="mr-4 hidden lg:block">
-                            <Link to={'/login'}><button className="bg-zinc-500 px-5 py-5 rounded-lg">Log In</button></Link>
+                            {
+                                user? <div className="">
+                                    <button onClick={() => logOut()} className="bg-zinc-500 px-5 py-5 rounded-lg">Sign Out</button>
+                                </div> :
+                                <Link to={'/login'}><button className="bg-zinc-500 px-5 py-5 rounded-lg">Log In</button></Link>
+                            }
                         </div>
                         <div className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
                             onClick={() => setOpenNav(!openNav)}>
