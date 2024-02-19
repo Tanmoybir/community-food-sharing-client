@@ -11,8 +11,6 @@ const Navbar = () => {
     const [openNav, setOpenNav] = useState(false);
     const { user, logOut } = useAuth()
 
-    console.log(user);
-
     useEffect(() => {
         window.addEventListener(
             "resize",
@@ -23,9 +21,15 @@ const Navbar = () => {
     const navList = [
         { id: 1, name: 'Home', link: '/' },
         { id: 2, name: 'Available Food', link: '/availableFood' },
-        { id: 3, name: 'Add Food', link: '/addFood' },
-        { id: 4, name: 'Manage My Foods', link: '/manageMyFoods' },
-        { id: 5, name: 'My Food Request', link: '/myFoodRequest' },
+        ...(user
+            ? [
+                { id: 3, name: "Add Food", link: "/addFood" },
+                { id: 4, name: "Manage My Foods", link: "/manageMyFoods" },
+                { id: 5, name: "My Food Request", link: "/myFoodRequest" },
+            ]
+            : []
+        )
+        
     ]
     return (
         <div className="-m-6 max-h-[768px] w-[calc(100%+48px)] overflow-scroll sticky top-0 z-10 bg-white shadow-lg">

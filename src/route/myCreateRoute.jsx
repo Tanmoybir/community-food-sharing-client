@@ -28,11 +28,11 @@ const myCreateRoute = createBrowserRouter([
             },
             {
                 path:'/manageMyFoods',
-                element: <ManageMyFoods/>
+                element: <PrivateRoute><ManageMyFoods/></PrivateRoute>
             },
             {
                 path:'/myFoodRequest',
-                element: <MyFoodRequest/>
+                element: <PrivateRoute><MyFoodRequest/></PrivateRoute>
             }
         ]
     },
