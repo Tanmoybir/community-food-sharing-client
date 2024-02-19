@@ -1,6 +1,5 @@
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
-
 import PropTypes from 'prop-types';
 import { auth } from "../firebase/firebase.config";
 

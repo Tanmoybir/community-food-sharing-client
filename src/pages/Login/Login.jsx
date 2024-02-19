@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
@@ -10,6 +10,7 @@ const Login = () => {
     const [open, setOpen] = useState(false)
     const { signInUser } = useAuth()
     const navigate = useNavigate()
+    const location = useLocation()
 
     console.log(email, password);
 
@@ -23,7 +24,7 @@ const Login = () => {
         try {
             await signInUser(email, password)
             toast.success('User Sign In Successfully', { id: toastId })
-            navigate('/')
+            navigate(location?.state? location.state : '/')
         }
         catch (error) {
             console.log(error);
