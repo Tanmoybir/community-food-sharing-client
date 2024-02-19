@@ -4,11 +4,14 @@ import { Link, NavLink } from "react-router-dom";
 import { IoMenu, IoClose } from "react-icons/io5";
 import Container from "../Container/Container";
 import useAuth from "../../hooks/useAuth";
+import { Avatar } from "@material-tailwind/react";
 
 
 const Navbar = () => {
     const [openNav, setOpenNav] = useState(false);
-    const {user,logOut} = useAuth()
+    const { user, logOut } = useAuth()
+
+    console.log(user);
 
     useEffect(() => {
         window.addEventListener(
@@ -58,10 +61,11 @@ const Navbar = () => {
                         {/* last */}
                         <div className="mr-4 hidden lg:block">
                             {
-                                user? <div className="">
+                                user ? <div className="">
+                                    <Avatar src={user?.photoURL} alt="avatar" />
                                     <button onClick={() => logOut()} className="bg-zinc-500 px-5 py-5 rounded-lg">Sign Out</button>
                                 </div> :
-                                <Link to={'/login'}><button className="bg-zinc-500 px-5 py-5 rounded-lg">Log In</button></Link>
+                                    <Link to={'/login'}><button className="bg-zinc-500 px-5 py-5 rounded-lg">Log In</button></Link>
                             }
                         </div>
                         <div className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"

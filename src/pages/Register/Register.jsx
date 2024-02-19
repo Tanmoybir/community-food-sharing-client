@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Register = () => {
     const [name, setName] = useState('')
@@ -8,16 +9,20 @@ const Register = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const {createUser, profile} = useAuth()
+    const navigate = useNavigate()
 
     
-    const handleSignUp = (e) => {
+    const handleSignUp = async(e) => {
         e.preventDefault()
+        const toastId = toast.loading('Loading...')
         try{
-            createUser(email,password)
-            profile(name,image)
+           await createUser(email,password)
+           await profile(name,image)
+           toast.success('User Created Successfully', { id: toastId })
+           navigate('/')
         }
         catch(error){
-            console.log(error.massage);
+            toast.error(error.massage, { id: toastId })
         }
     }
     return (
@@ -38,7 +43,7 @@ const Register = () => {
                     {/* input side  */}
                     <div className="flex w-full flex-col justify-center bg-white py-10 lg:w-[60%]">
                         <h2 className="pb-8 text-center text-3xl font-bold text-[#8EA7E9]">Sign up Here</h2>
-                        <form onClick={handleSignUp} className="flex  w-full flex-col items-center justify-center gap-4">
+                        <form onSubmit={handleSignUp} className="flex  w-full flex-col items-center justify-center gap-4">
                             <input className="w-[80%] rounded-lg border border-[#8EA7E9] px-6 py-2 focus:outline-none focus:ring-2 focus:ring-[#8EA7E9]/50 md:w-[60%]" type="name" onBlur={(e) => setName(e.target.value)} placeholder="Name" name="name" />
                             <input className="w-[80%] rounded-lg border border-[#8EA7E9] px-6 py-2 focus:outline-none focus:ring-2 focus:ring-[#8EA7E9]/50 md:w-[60%]" type="url" onBlur={(e) => setImage(e.target.value)} placeholder="Photo-URL" name="image" />
                             <input className="w-[80%] rounded-lg border border-[#8EA7E9] px-6 py-2 focus:outline-none focus:ring-2 focus:ring-[#8EA7E9]/50 md:w-[60%]" type="email" onBlur={(e) => setEmail(e.target.value)} placeholder="Email" name="email" />

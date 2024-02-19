@@ -1,21 +1,27 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const {signInUser} = useAuth()
+    const { signInUser } = useAuth()
+    const navigate = useNavigate()
 
     console.log(email, password);
 
-    const handleSignIn = (e) => {
+    const handleSignIn = async (e) => {
         e.preventDefault()
-        try{
-            signInUser(email,password)
+        const toastId = toast.loading('Loading...')
+        try {
+            await signInUser(email, password)
+            toast.success('User Sign In Successfully', { id: toastId })
+            navigate('/')
         }
-        catch(error) {
+        catch (error) {
             console.log(error);
+            toast.error(error.message, { id: toastId })
         }
     }
     return (
@@ -36,7 +42,7 @@ const Login = () => {
                     {/* input side  */}
                     <div className="flex w-full flex-col justify-center bg-white py-10 lg:w-[60%]">
                         <h2 className="pb-8 text-center text-3xl font-bold text-[#8EA7E9]">Sign In Here</h2>
-                        <form onClick={handleSignIn} className="flex  w-full flex-col items-center justify-center gap-4">
+                        <form onSubmit={handleSignIn} className="flex  w-full flex-col items-center justify-center gap-4">
                             <input className="w-[80%] rounded-lg border border-[#8EA7E9] px-6 py-2 focus:outline-none focus:ring-2 focus:ring-[#8EA7E9]/50 md:w-[60%]" type="email" onBlur={(e) => setEmail(e.target.value)} placeholder="Email" name="email" />
                             <input className="w-[80%] rounded-lg border border-[#8EA7E9] px-6 py-2 focus:outline-none focus:ring-2 focus:ring-[#8EA7E9]/50 md:w-[60%]" type="password" onBlur={(e) => setPassword(e.target.value)} placeholder="Password" name="password" />
                             <p className="text-[14px] text-gray-400">Do not have an account ? <Link to={'/register'} className="text-[#8EA7E9] ">Sign In</Link></p>
