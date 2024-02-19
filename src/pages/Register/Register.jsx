@@ -2,26 +2,32 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 const Register = () => {
     const [name, setName] = useState('')
     const [image, setImage] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const {createUser, profile} = useAuth()
+    const [open, setOpen] = useState(false)
+    const { createUser, profile } = useAuth()
     const navigate = useNavigate()
 
-    
-    const handleSignUp = async(e) => {
+
+    const handleSignUp = async (e) => {
         e.preventDefault()
         const toastId = toast.loading('Loading...')
-        try{
-           await createUser(email,password)
-           await profile(name,image)
-           toast.success('User Created Successfully', { id: toastId })
-           navigate('/')
+        if (password.length < 6) {
+            toast.error('Password must be at least six character', { id: toastId })
+            return
         }
-        catch(error){
+        try {
+            await createUser(email, password)
+            await profile(name, image)
+            toast.success('User Created Successfully', { id: toastId })
+            navigate('/')
+        }
+        catch (error) {
             toast.error(error.massage, { id: toastId })
         }
     }
@@ -47,7 +53,14 @@ const Register = () => {
                             <input className="w-[80%] rounded-lg border border-[#8EA7E9] px-6 py-2 focus:outline-none focus:ring-2 focus:ring-[#8EA7E9]/50 md:w-[60%]" type="name" onBlur={(e) => setName(e.target.value)} placeholder="Name" name="name" />
                             <input className="w-[80%] rounded-lg border border-[#8EA7E9] px-6 py-2 focus:outline-none focus:ring-2 focus:ring-[#8EA7E9]/50 md:w-[60%]" type="url" onBlur={(e) => setImage(e.target.value)} placeholder="Photo-URL" name="image" />
                             <input className="w-[80%] rounded-lg border border-[#8EA7E9] px-6 py-2 focus:outline-none focus:ring-2 focus:ring-[#8EA7E9]/50 md:w-[60%]" type="email" onBlur={(e) => setEmail(e.target.value)} placeholder="Email" name="email" />
-                            <input className="w-[80%] rounded-lg border border-[#8EA7E9] px-6 py-2 focus:outline-none focus:ring-2 focus:ring-[#8EA7E9]/50 md:w-[60%]" type="password" onBlur={(e) => setPassword(e.target.value)} placeholder="Password" name="password" />
+                            <div className=" relative w-[80%] md:w-[60%] text-center">
+                            <input className="w-full mx-auto rounded-lg border border-[#8EA7E9] px-6 py-2 focus:outline-none focus:ring-2 focus:ring-[#8EA7E9]/50" type={open? "text":"password"} onBlur={(e) => setPassword(e.target.value)} placeholder="Password" name="password" />
+                            <div onClick={() => setOpen(!open)} className="absolute top-1/3 right-2">
+                                {
+                                    open? <FaRegEyeSlash/> : <FaRegEye/>
+                                }
+                            </div>
+                            </div>
                             <p className="text-[14px] text-gray-400">Do not have an account ? <Link to={'/login'} className="text-[#8EA7E9] ">Create one</Link></p>
                             <input className="w-[80%] rounded-lg bg-[#8EA7E9] px-6 py-2 font-medium text-white md:w-[60%]" type="submit" />
                         </form>

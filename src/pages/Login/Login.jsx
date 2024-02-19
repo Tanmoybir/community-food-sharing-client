@@ -2,10 +2,12 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [open, setOpen] = useState(false)
     const { signInUser } = useAuth()
     const navigate = useNavigate()
 
@@ -14,6 +16,10 @@ const Login = () => {
     const handleSignIn = async (e) => {
         e.preventDefault()
         const toastId = toast.loading('Loading...')
+        if (password.length < 6) {
+            toast.error('Password must be at least six character', { id: toastId })
+            return
+        }
         try {
             await signInUser(email, password)
             toast.success('User Sign In Successfully', { id: toastId })
@@ -44,7 +50,14 @@ const Login = () => {
                         <h2 className="pb-8 text-center text-3xl font-bold text-[#8EA7E9]">Sign In Here</h2>
                         <form onSubmit={handleSignIn} className="flex  w-full flex-col items-center justify-center gap-4">
                             <input className="w-[80%] rounded-lg border border-[#8EA7E9] px-6 py-2 focus:outline-none focus:ring-2 focus:ring-[#8EA7E9]/50 md:w-[60%]" type="email" onBlur={(e) => setEmail(e.target.value)} placeholder="Email" name="email" />
-                            <input className="w-[80%] rounded-lg border border-[#8EA7E9] px-6 py-2 focus:outline-none focus:ring-2 focus:ring-[#8EA7E9]/50 md:w-[60%]" type="password" onBlur={(e) => setPassword(e.target.value)} placeholder="Password" name="password" />
+                            <div className=" relative w-[80%] md:w-[60%] text-center">
+                            <input className="w-full mx-auto rounded-lg border border-[#8EA7E9] px-6 py-2 focus:outline-none focus:ring-2 focus:ring-[#8EA7E9]/50" type={open? "text":"password"} onBlur={(e) => setPassword(e.target.value)} placeholder="Password" name="password" />
+                            <div onClick={() => setOpen(!open)} className="absolute top-1/3 right-2">
+                                {
+                                    open? <FaRegEyeSlash/> : <FaRegEye/>
+                                }
+                            </div>
+                            </div>
                             <p className="text-[14px] text-gray-400">Do not have an account ? <Link to={'/register'} className="text-[#8EA7E9] ">Sign In</Link></p>
                             <input className="w-[80%] rounded-lg bg-[#8EA7E9] px-6 py-2 font-medium text-white md:w-[60%]" type="submit" />
                         </form>
